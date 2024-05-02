@@ -25,18 +25,24 @@ Route::get('/contato', function () {
 });
 */
 
-Route::get('/', 'PrincipalController@principal');
+Route::get('/', 'PrincipalController@principal')->name('site.principal');
 
-Route::get('/contato', 'ContatoController@contato');
+Route::get('/contato', 'ContatoController@contato')->name('site.contato');
 
-Route::get('/sobre-nos', 'SobreNosController@sobre');
+Route::get('/sobre-nos', 'SobreNosController@sobre')->name('site.sobre-nos');
 
-Route::get('/login', function(){return 'Login';});
+Route::get('/login', function(){return 'Login';})->name('site.login');
 
-Route::get('/clientes', function(){return 'clientes';});
+Route::prefix('/app')->group(function(){
+    Route::get('/clientes', function(){return 'clientes';})->name('app.clientes');
+    Route::get('/fornecedores', 'FornecedorController@index')->name('app.fornecedores');
+    Route::get('/produtos', function(){return 'produtos';})->name('app.produtos');
+});
 
-Route::get('/fornecedores', function(){return 'fornecedores';});
+Route::get('/teste/{p1}/{p2}', 'TesteController@teste')->name('teste');
 
-Route::get('/produtos', function(){return 'produtos';});
 
+Route::fallback(function(){
+    echo 'página nao encontrada, <a href="'.route('site.index').'" >clique aqui </a> para ir para a página inicial.';
+});
 
